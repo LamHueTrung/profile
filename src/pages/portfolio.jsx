@@ -120,7 +120,7 @@ function Portfolio() {
             url: 'http://playtogetherlucky.kesug.com/',
             info: "<p><strong>Tài khoản admin:</strong>tự đăng ký</p><p><strong>Mật khẩu:</strong>tự tạo</p>",
             description: 'Trang web sự kiện tặng quà cho game Play Together, viết cho 1 cá nhân hoạt động trong lĩnh vực game.',
-            image: '/img/project/docshare.jpg',
+            image: '/img/project/playtogether.jpg',
         },
         {
             id: 8,
