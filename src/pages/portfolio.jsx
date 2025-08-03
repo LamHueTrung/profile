@@ -28,7 +28,6 @@ const buttonVariants = {
   tap: { scale: 0.95 }
 };
 function Portfolio() {
-    const navigate = useNavigate();
     const [filter, setFilter] = useState('all');
     const handleViewMore = (project) => {
         if(project.url === 'private') {

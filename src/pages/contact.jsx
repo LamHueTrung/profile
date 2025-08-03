@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SideBar from '../partials/sidebar';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser, faComment, faCopy, faLinkedin, faGithub, faTwitter } from '@fortawesome/free-solid-svg-icons';
-import { faTiktok as faTiktok, faGithub as faGithubBrand, faFacebookMessenger as faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faUser, faComment, faCopy} from '@fortawesome/free-solid-svg-icons';
+import { faTiktok , faGithub as faGithubBrand, faFacebookMessenger} from '@fortawesome/free-brands-svg-icons';
 
 // Animation variants for smooth transitions
 const containerVariants = {
@@ -31,7 +30,6 @@ const buttonVariants = {
 };
 
 function Contact() {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [submitStatus, setSubmitStatus] = useState(null);
     const [copyStatus, setCopyStatus] = useState(null);

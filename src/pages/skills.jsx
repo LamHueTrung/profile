@@ -25,7 +25,6 @@ const itemVariants = {
 };
 
 function Skills() {
-    const navigate = useNavigate();
     const [animate, setAnimate] = useState(false);
 
     const skills = [
