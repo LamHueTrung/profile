@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SideBar from '../partials/sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faRocket, faTrophy } from '@fortawesome/free-solid-svg-icons';
-
+import Swal from 'sweetalert2';
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -29,6 +29,17 @@ const buttonVariants = {
 
 function Home() {
   const navigate = useNavigate();
+  Swal.fire({
+    title: 'Chào mừng bạn đến với trang cá nhân của tôi!',
+    text: 'Hiện tại chưa có giao diện cho mobile, vui lòng truy cập trên máy tính để có trải nghiệm tốt nhất.',
+    icon: 'info',
+    confirmButtonText: 'Tiếp tục',
+    customClass: {
+      title: 'text-2xl font-bold text-purple-600',
+      content: 'text-lg text-gray-700',
+      confirmButton: 'bg-purple-600 text-white hover:bg-purple-500 transition-colors duration-300 rounded-full px-6 py-2 font-semibold',
+    },
+  });
 
   return (
     <div className="flex min-h-screen bg-gray-900 relative overflow-hidden">
