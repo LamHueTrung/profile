@@ -52,7 +52,7 @@ function Contact() {
     };
 
     const handleCopyEmail = () => {
-        navigator.clipboard.writeText('lamhuutrung.dev@gmail.com');
+        navigator.clipboard.writeText('lamhuetrung.dev@gmail.com');
         setCopyStatus('copied');
         setTimeout(() => setCopyStatus(null), 2000);
     };
