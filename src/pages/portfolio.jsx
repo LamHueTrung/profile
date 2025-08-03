@@ -47,7 +47,7 @@ function Portfolio() {
           `,
           icon: 'info',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 15000,
           timerProgressBar: true,
           allowOutsideClick: false,
           didOpen: () => {
@@ -81,7 +81,7 @@ function Portfolio() {
             id: 3,
             title: 'SIS-Intern System',
             category: 'NodeJS',
-            url: 'https://ithub-learning.onrender.com/',
+            url: 'https://sisterntvu-bangbaocao.netlify.app/',
             info: "<p><strong>Tài khoản admin:</strong> admin@sistern.com</p><p><strong>Mật khẩu:</strong> admin</p><p><strong>Tài khoản sinh viên:</strong> lamhuetrung@gmail.com</p><p><strong>Mật khẩu:</strong> lamhuetrung</p><p><strong>Tài khoản giảng viên:</strong> nguyenbaoan@gmail.com</p><p><strong>Mật khẩu:</strong> nguyenbaoan</p>",
             description: 'Hệ thống quản lý quá trình thực tập của sinh viên, tập trung chủ yếu vào quy trình, code còn nhiều lỗi và chưa hoàn thiện.',
             image: '/img/project/sis-intern-system.jpg',
