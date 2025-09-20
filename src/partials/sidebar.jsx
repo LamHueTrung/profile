@@ -53,7 +53,7 @@ function SideBar() {
           <div className="absolute w-1 h-1 bg-white/25 rounded-full top-[60%] left-[30%] animate-twinkle delay-400" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse-slow" />
-        <div className="mb-10 sm:mb-16 text-center relative z-10">
+        <div className="hidden md:block mb-10 sm:mb-16 text-center relative z-10">
           <h1 className="hidden md:block text-2xl sm:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 transform transition-all duration-700 hover:scale-110 hover:drop-shadow-[0_0_20px_rgba(147,51,234,0.5)]">
             Lâm Huệ Trung
           </h1>
