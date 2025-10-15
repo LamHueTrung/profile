@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SideBar from '../partials/sidebar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
-// Animation variants for smooth transitions
+// Animation variants
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -15,7 +15,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: 0.9 },
   visible: {
     opacity: 1,
     scale: 1,
@@ -24,12 +24,38 @@ const itemVariants = {
 };
 
 const buttonVariants = {
-  hover: { scale: 1.05, boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)' },
+  hover: { scale: 1.05, boxShadow: '0 4px 15px rgba(147,51,234,0.5)' },
   tap: { scale: 0.95 },
 };
 
 function Portfolio() {
   const [filter, setFilter] = useState('all');
+  const [sidebarWidth, setSidebarWidth] = useState(0);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Sidebar auto adjustment
+  useEffect(() => {
+    const updateSidebarState = () => {
+      const sidebar = document.querySelector('.sidebar');
+      const isLargeScreen = window.innerWidth >= 768;
+      setIsSidebarOpen(isLargeScreen);
+      setSidebarWidth(sidebar ? sidebar.offsetWidth : isLargeScreen ? 72 : 0);
+    };
+    updateSidebarState();
+    window.addEventListener('resize', updateSidebarState);
+    const handleSidebarToggle = (e) => {
+      if (e.detail && e.detail.open !== undefined) {
+        setIsSidebarOpen(e.detail.open);
+        setSidebarWidth(e.detail.open ? 64 : 0);
+      }
+    };
+    window.addEventListener('sidebarToggle', handleSidebarToggle);
+    return () => {
+      window.removeEventListener('resize', updateSidebarState);
+      window.removeEventListener('sidebarToggle', handleSidebarToggle);
+    };
+  }, []);
 
   const handleViewMore = (project) => {
     if (project.url === 'private') {
@@ -40,32 +66,24 @@ function Portfolio() {
         confirmButtonText: 'OK',
         customClass: {
           title: 'text-xl sm:text-2xl font-bold text-purple-600',
-          content: 'text-sm sm:text-base text-gray-700',
-          confirmButton: 'bg-purple-600 text-white hover:bg-purple-500 transition-colors duration-300 rounded-full px-4 sm:px-6 py-2 font-semibold',
+          confirmButton:
+            'bg-purple-600 text-white hover:bg-purple-500 rounded-full px-6 py-2 font-semibold transition-all duration-300',
         },
       });
       return;
     }
     Swal.fire({
       title: 'Thông tin truy cập',
-      html: `
-        ${project.info}
-        <p class="mt-4 text-xs sm:text-sm text-gray-400">Đang chuyển hướng trong 30 giây...</p>
-      `,
+      html: `${project.info}<p class="mt-4 text-xs sm:text-sm text-gray-400">Đang chuyển hướng...</p>`,
       icon: 'info',
       showConfirmButton: false,
-      timer: 15000,
+      timer: 10000,
       timerProgressBar: true,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-      willClose: () => {
-        window.open(project.url, '_blank');
-      },
+      didOpen: () => Swal.showLoading(),
+      willClose: () => window.open(project.url, '_blank'),
       customClass: {
         title: 'text-xl sm:text-2xl font-bold text-purple-600',
-        htmlContainer: 'text-sm sm:text-base',
+        htmlContainer: 'text-sm sm:text-base text-gray-700',
       },
     });
   };
@@ -77,7 +95,8 @@ function Portfolio() {
       category: 'NodeJS',
       url: 'https://tdgm-victory-microserver.up.railway.app/',
       info: '<p><strong>Tài khoản:</strong> LamHueTrung</p><p><strong>Mật khẩu:</strong> P@ssword123</p>',
-      description: 'Dự án này là một hệ thống web giúp tự động hóa và tối ưu hóa việc quản lý thiết bị dạy học và quà tặng.',
+      description:
+        'Hệ thống web giúp tự động hóa và tối ưu hóa việc quản lý thiết bị dạy học và quà tặng.',
       image: '/img/project/tdgm-victory-system.jpg',
     },
     {
@@ -86,7 +105,8 @@ function Portfolio() {
       category: 'NodeJS',
       url: 'https://ithub-learning.onrender.com/',
       info: '<p><strong>Tài khoản admin:</strong> LamHueTrung</p><p><strong>Mật khẩu:</strong> P@ssword123</p>',
-      description: 'Website khoá học self-learning online xây dựng các tính năng dựa trên trang web F8.com.',
+      description:
+        'Website khoá học self-learning online dựa trên F8.com, tối ưu UX và API backend.',
       image: '/img/project/ithub-learning.jpg',
     },
     {
@@ -94,8 +114,9 @@ function Portfolio() {
       title: 'SIS-Intern System',
       category: 'NodeJS',
       url: 'https://sisterntvu-bangbaocao.netlify.app/',
-      info: '<p><strong>Tài khoản admin:</strong> admin@sistern.com</p><p><strong>Mật khẩu:</strong> admin</p><p><strong>Tài khoản sinh viên:</strong> lamhuetrung@gmail.com</p><p><strong>Mật khẩu:</strong> lamhuetrung</p><p><strong>Tài khoản giảng viên:</strong> nguyenbaoan@gmail.com</p><p><strong>Mật khẩu:</strong> nguyenbaoan</p>',
-      description: 'Hệ thống quản lý quá trình thực tập của sinh viên, tập trung chủ yếu vào quy trình, code còn nhiều lỗi và chưa hoàn thiện.',
+      info: '<p><strong>Admin:</strong> admin@sistern.com / admin</p><p><strong>Giảng viên:</strong> nguyenbaoan@gmail.com / nguyenbaoan</p>',
+      description:
+        'Hệ thống quản lý quá trình thực tập sinh viên. Ứng dụng ReactJS, NodeJS, MongoDB.',
       image: '/img/project/sis-intern-system.jpg',
     },
     {
@@ -103,139 +124,76 @@ function Portfolio() {
       title: 'UI/UX Travel',
       category: 'UI/UX',
       url: 'https://lamhuetrung-travel.netlify.app/',
-      info: '<p><strong>Tài khoản admin:</strong> Không có</p><p><strong>Mật khẩu:</strong> Không có</p>',
-      description: 'Thiết kế website travel blog đây là sản phẩm đầu tay khi tôi làm việc với ReactJS.',
+      info: 'Thiết kế giao diện ReactJS blog du lịch với hiệu ứng cuộn mượt.',
+      description: 'Sản phẩm đầu tay về UI/UX, chú trọng trải nghiệm thị giác.',
       image: '/img/project/travel-ui-ux.jpg',
-    },
-    {
-      id: 5,
-      title: 'Shop TND',
-      category: 'Laravel',
-      url: 'https://dientoandammay-c907c7f4dac8.herokuapp.com/',
-      info: '<p><strong>Tài khoản admin:</strong> admin@admin.com</p><p><strong>Mật khẩu:</strong> admin</p>',
-      description: 'Shop bán đồ điện tử đầy đủ chức năng, đồ án môn học điện toán đám mây.',
-      image: '/img/project/dientoandammay.jpg',
-    },
-    {
-      id: 6,
-      title: 'Quản lý tiệm tạp hóa',
-      category: 'Laravel',
-      url: 'https://www.tiktok.com/@huetrungcoder/video/7514585029893295367',
-      info: '<p>Xem video demo nhé, do hết kinh phí không thể public được...</p>',
-      description: 'Website quản lý bán hàng cho tiệm tạp hóa Nhi Thảnh, đây là đồ án môn học Mã nguồn mở.',
-      image: '/img/project/nhithanh.jpg',
-    },
-    {
-      id: 7,
-      title: 'Play Together',
-      category: 'Laravel',
-      url: 'http://playtogetherlucky.kesug.com/',
-      info: '<p><strong>Tài khoản admin:</strong> tự đăng ký</p><p><strong>Mật khẩu:</strong> tự tạo</p>',
-      description: 'Trang web sự kiện tặng quà cho game Play Together, viết cho 1 cá nhân hoạt động trong lĩnh vực game.',
-      image: '/img/project/playtogether.jpg',
-    },
-    {
-      id: 8,
-      title: 'Quản lý đồ án',
-      category: 'Laravel',
-      url: 'private',
-      info: '<p><strong>Tài khoản admin:</strong> tự đăng ký</p><p><strong>Mật khẩu:</strong> tự tạo</p>',
-      description: 'Đồ án môn học, website quản lý các source code đồ án dành cho cá nhân.',
-      image: '/img/project/quanlydoan.jpg',
-    },
-    {
-      id: 9,
-      title: 'Shop điện tử',
-      category: 'PHP',
-      url: 'private',
-      info: '<p><strong>Tài khoản admin:</strong> tự đăng ký</p><p><strong>Mật khẩu:</strong> tự tạo</p>',
-      description: 'Website bán sản phẩm thiết bị điện tử, quản lý kho, tích hợp thanh toán.',
-      image: '/img/project/cmt247.jpg',
-    },
-    {
-      id: 10,
-      title: 'ChatLht',
-      category: 'NodeJS',
-      url: 'https://chatlht.netlify.app/',
-      info: '<p><strong>Tài khoản admin:</strong> LamHueTrung</p><p><strong>Mật khẩu:</strong> Lâu quá hổng nhớ</p>',
-      description: 'Website App chat real time, đây là ứng dụng viết riêng cho nhóm lập trình LHT.',
-      image: '/img/project/chatlht.jpg',
-    },
-    {
-      id: 11,
-      title: '2Love Chat',
-      category: 'UI/UX',
-      url: 'https://www.figma.com/design/GxOYw6LyS32R3mPMocek3T/404-NotFound-Hi-Fi?node-id=7-2&t=wrhB8xRtLzMAnZO0-1',
-      info: '<p>Thiết kế trên figma.</p>',
-      description: 'Thiết kế giao diện ứng dụng hẹn hò 2Love, đây là sản phẩm môn học Tương tác người-máy.',
-      image: '/img/project/2love.png',
-    },
-    {
-      id: 12,
-      title: '+20 website khác',
-      category: 'Order',
-      url: 'private',
-      info: '<p>Đây là thông tin bảo mật nhầm tránh bị bản quyền nên không thể tiết lộ.</p>',
-      description: 'Khoảng 6 website cho các doanh nghiệp cá nhân về quản lý quán cà phê, trang thông tin, trường học, shop quần áo và một số đồ án cho sinh viên. Vì đây là thông tin bảo mật nên tôi không thể đính kèm trên đây.',
-      image: '/img/project/private.jpg',
     },
   ];
 
-  const filteredProjects = filter === 'all' ? projects : projects.filter((project) => project.category === filter);
+  const filteredProjects =
+    filter === 'all'
+      ? projects
+      : projects.filter((project) => project.category === filter);
 
   return (
     <div className="flex min-h-screen bg-gray-900">
-      <SideBar />
-      <div className="flex-1 p-4 sm:p-6 md:p-8 text-white">
-        <div className="container mx-auto max-w-5xl">
-          {/* Header Section */}
+      <SideBar onToggle={(open) => setIsSidebarOpen(open)} />
+      <div
+        className="flex-1 p-4 sm:p-6 md:p-8 text-white transition-all duration-300"
+        style={{ marginLeft: isSidebarOpen ? `${sidebarWidth}px` : '0' }}
+      >
+        <div className="container mx-auto max-w-6xl">
+          {/* Header */}
           <motion.section
+            className="text-center py-6 sm:py-8 md:py-10"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 mb-4 sm:mb-6 text-center sm:text-left"
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 mb-3 sm:mb-5"
               variants={itemVariants}
             >
-              Sản phẩm của tôi
+              Danh Mục Dự Án
             </motion.h1>
             <motion.p
-              className="text-base sm:text-lg md:text-lg opacity-80 mb-6 sm:mb-8 leading-relaxed text-center sm:text-left"
+              className="text-base sm:text-lg text-gray-300 opacity-90 max-w-3xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              Khám phá các dự án nổi bật của tôi, từ thiết kế website, giao diện người dùng, đến các dự án freelance sáng tạo.
+              Một số sản phẩm tiêu biểu của tôi trong lĩnh vực phát triển phần mềm và thiết kế giao diện người dùng.
             </motion.p>
           </motion.section>
 
-          {/* Filter Buttons */}
+          {/* Filter */}
           <motion.div
-            className="flex flex-wrap gap-2 sm:gap-4 mb-6 sm:mb-8"
+            className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-10"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            {['all', 'NodeJS', 'Laravel', 'PHP', 'UI/UX', 'Order'].map((category) => (
-              <motion.button
-                key={category}
-                onClick={() => setFilter(category)}
-                className={`px-3 sm:px-4 py-1 sm:py-2 rounded-lg font-medium text-sm sm:text-base transition-all duration-300 ${
-                  filter === category
-                    ? 'bg-purple-600 text-white shadow-[0_4px_15px_rgba(147,51,234,0.4)]'
-                    : 'bg-purple-950/50 text-purple-300 hover:bg-purple-800/50'
-                }`}
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-              >
-                {category === 'all' ? 'All' : category}
-              </motion.button>
-            ))}
+            {['all', 'NodeJS', 'Laravel', 'PHP', 'UI/UX', 'Order'].map(
+              (category) => (
+                <motion.button
+                  key={category}
+                  onClick={() => setFilter(category)}
+                  className={`px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${
+                    filter === category
+                      ? 'bg-purple-600 text-white shadow-[0_4px_15px_rgba(147,51,234,0.5)]'
+                      : 'bg-purple-950/50 text-purple-300 hover:bg-purple-800/50'
+                  }`}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                >
+                  {category === 'all' ? 'Tất cả' : category}
+                </motion.button>
+              )
+            )}
           </motion.div>
 
-          {/* Projects Grid */}
+          {/* Projects */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -243,10 +201,12 @@ function Portfolio() {
             {filteredProjects.map((project) => (
               <motion.div
                 key={project.id}
-                className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-purple-950/50 to-indigo-950/50 shadow-[0_4px_20px_rgba(147,51,234,0.3)]"
+                className="bg-gradient-to-br from-purple-950/50 to-indigo-950/50 rounded-2xl overflow-hidden shadow-[0_6px_20px_rgba(147,51,234,0.4)]"
                 variants={itemVariants}
-                whileHover={{ scale: 1.05, boxShadow: '0 8px 30px rgba(147,51,234,0.5)' }}
-                transition={{ duration: 0.3 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 8px 25px rgba(147,51,234,0.6)',
+                }}
               >
                 <img
                   src={project.image}
@@ -254,21 +214,49 @@ function Portfolio() {
                   className="w-full h-40 sm:h-48 object-cover"
                 />
                 <div className="p-4 sm:p-5">
-                  <h3 className="text-lg sm:text-xl font-semibold text-purple-300 mb-2">{project.title}</h3>
-                  <p className="text-xs sm:text-sm opacity-70 mb-3 sm:mb-4">{project.description}</p>
+                  <h3 className="text-lg sm:text-xl font-semibold text-purple-300 mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm sm:text-base opacity-80 mb-4">
+                    {project.description}
+                  </p>
                   <motion.button
                     onClick={() => handleViewMore(project)}
-                    className="px-3 sm:px-4 py-1 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition-colors duration-300 text-sm sm:text-base"
+                    className="px-4 sm:px-5 py-1.5 sm:py-2 bg-purple-600 text-white rounded-full hover:bg-purple-500 transition-colors duration-300 text-sm sm:text-base font-semibold"
                     variants={buttonVariants}
                     whileHover="hover"
                     whileTap="tap"
                   >
-                    Xem thêm
+                    Xem chi tiết
                   </motion.button>
                 </div>
               </motion.div>
             ))}
           </motion.div>
+
+          {/* CTA */}
+          <motion.section
+            className="text-center mt-12 sm:mt-16 md:mt-20"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h2
+              className="text-2xl sm:text-3xl font-semibold text-purple-300 mb-3 sm:mb-5"
+              variants={itemVariants}
+            >
+              Muốn Xem Thêm Dự Án?
+            </motion.h2>
+            <motion.button
+              onClick={() => navigate('/contact')}
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-purple-600 text-white rounded-full hover:bg-purple-500 transition-colors duration-300 shadow-xl font-semibold text-sm sm:text-base"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
+              Liên hệ để hợp tác
+            </motion.button>
+          </motion.section>
         </div>
       </div>
     </div>
